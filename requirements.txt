@@ -1,0 +1,5 @@
+Flask>=3.0.0
+lunar_python>=1.3.0
+lunarcalendar>=0.0.9
+ephem>=4.1.5
+gunicorn

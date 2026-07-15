@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnarise Tử Vi - Premium Edition</title>
+    <!-- Bootstrap 4.6.2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts: Đã đổi sang Playfair Display hỗ trợ Tiếng Việt cực tốt -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <style>
+        /* === BẢNG MÀU & FONT === */
+        :root {
+            --gold: #d4af37;
+            --gold-light: #fdf3d1;
+            --dark-blue: #121526;
+            --royal-blue: #1a233a;
+            --accent-red: #c0392b;
+            --text-main: #2d3748;
+            --bg-body: #f0f2f5;
+        }
+
+        body { 
+            background: var(--bg-body);
+            font-family: 'Be Vietnam Pro', sans-serif; 
+            padding-top: 30px;
+            padding-bottom: 60px;
+            color: var(--text-main);
+        }
+
+        /* Sử dụng Playfair Display cho các tiêu đề */
+        h1, h2, h3, h4, h5, .cung-header, .dict-title, .font-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* === BỐ CỤC KHUNG CHUẨN === */
+        .app-container {
+            width: 100%;
+            max-width: 1150px; 
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* === CARDS === */
+        .premium-card { 
+            background: #ffffff;
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
+            margin-bottom: 30px;
+            border-top: 4px solid var(--gold);
+            overflow: hidden; 
+        }
+        
+        .card-header-custom {
+            background: linear-gradient(135deg, var(--royal-blue) 0%, var(--dark-blue) 100%);
+            color: var(--gold);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .card-body-custom {
+            padding: 30px;
+        }
+
+        /* === FORM STYLING === */
+        label { 
+            font-weight: 600; 
+            color: #4a5568; 
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #cbd5e0;
+            padding: 10px 15px;
+            height: 45px;
+            font-size: 15px;
+            color: #2d3748;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--gold);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        .input-group-text {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e0;
+            border-right: none;
+            color: var(--gold);
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .input-group .form-control {
+            border-left: none;
+        }
+
+        /* === BUTTONS === */
+        .btn-custom-primary {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #2c3e50 100%);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            padding: 12px 35px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-custom-primary:hover {
+            background: var(--gold);
+            color: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-custom-outline {
+            background: transparent;
+            color: var(--dark-blue);
+            border: 2px solid var(--dark-blue);
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .btn-custom-outline:hover {
+            background: var(--dark-blue);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* === LÁ SỐ TỬ VI GRID === */
+        .laso-scroller {
+            width: 100%;
+            overflow-x: auto;
+            padding: 10px 0; 
+        }
+
+        .laso-scroller::-webkit-scrollbar { height: 8px; }
+        .laso-scroller::-webkit-scrollbar-track { background: #f0f2f5; border-radius: 4px; }
+        .laso-scroller::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+        .laso-scroller::-webkit-scrollbar-thumb:hover { background: #b8962e; }
+        
+        .laso-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 3px;
+            background: linear-gradient(135deg, var(--royal-blue), var(--dark-blue));
+            border: 5px solid var(--gold);
+            border-radius: 12px;
+            padding: 4px;
+            width: 100%;
+            min-width: 850px; 
+            min-height: 950px; 
+            height: auto;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            grid-template-areas:
+                "ty  ngo  mui than"
+                "thin thien thien dau"
+                "mao  thien thien tuat"
+                "dan suu  ti   hoi";
+        }
+
+        #cung-ty { grid-area: ty; } #cung-ngo { grid-area: ngo; } #cung-mui { grid-area: mui; } #cung-than { grid-area: than; }
+        #cung-thin { grid-area: thin; } #cung-dau { grid-area: dau; }
+        #cung-mao { grid-area: mao; } #cung-tuat { grid-area: tuat; }
+        #cung-dan { grid-area: dan; } #cung-suu { grid-area: suu; } #cung-ti { grid-area: ti; } #cung-hoi { grid-area: hoi; }
+        
+        /* === MÀU NGŨ HÀNH CÁC CUNG === */
+        /* Thủy (Tý, Hợi) - Xanh dương pastel */
+        #cung-ti, #cung-hoi { background-color: #e6f2ff; } 
+        /* Mộc (Dần, Mão) - Xanh lá pastel */
+        #cung-dan, #cung-mao { background-color: #e8f5e9; } 
+        /* Hỏa (Tỵ, Ngọ) - Đỏ/Hồng pastel */
+        #cung-ty, #cung-ngo { background-color: #ffebee; } 
+        /* Kim (Thân, Dậu) - Xám/Ghi sáng pastel */
+        #cung-than, #cung-dau { background-color: #f1f3f4; } 
+        /* Thổ (Thìn, Tuất, Sửu, Mùi) - Vàng đất pastel */
+        #cung-thin, #cung-tuat, #cung-suu, #cung-mui { background-color: #fff8e1; }
+
+        /* THIÊN BÀN Ở GIỮA */
+        .thien-ban { 
+            grid-area: thien; 
+            background: radial-gradient(circle, #ffffff 0%, #fdfbf7 100%);
+            border: 2px dashed var(--gold);
+            border-radius: 8px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            padding: 20px; z-index: 2;
+            margin: 8px;
+            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.1);
+        }
+        
+        .thien-ban h3 {
+            color: var(--dark-blue);
+            font-size: clamp(24px, 3vw, 32px); 
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .thien-ban-info {
+            text-align: left; font-size: clamp(14px, 1.5vw, 16px); line-height: 1.8; width: 95%; color: #2d3748;
+        }
+        .tb-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 4px 0;}
+        .tb-label { color: #718096; font-weight: 600;}
+        .tb-value { font-weight: 700; color: var(--dark-blue);}
+
+        /* TỪNG CUNG MỘT */
+        .cung { 
+            padding: 8px; 
+            display: flex; flex-direction: column; 
+            position: relative; z-index: 2; 
+            cursor: pointer; 
+            border-radius: 6px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            overflow: hidden; 
+        }
+        .cung:hover { 
+            transform: scale(1.025);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        #xung-chieu-svg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 5;
+        }
+        .xung-chieu-line { transition: opacity 0.3s, stroke-width 0.3s; }
+
+        .highlight-tieuhan {
+            border: 3px solid #ff9a00 !important; 
+        }
+        .tieu-han-badge {
+            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ff9a00, #ff5200);
+            color: #fff; padding: 4px 12px;
+            font-size: clamp(12px, 1.2vw, 15px); font-family: 'Playfair Display', serif; font-weight: bold; 
+            border-radius: 20px; pointer-events: none;
+            opacity: 0.95; white-space: nowrap; box-shadow: 0 4px 15px rgba(255, 100, 0, 0.4);
+        }
+        
+        .cung-header { display: flex; justify-content: space-between; font-size: clamp(13px, 1.2vw, 15px); font-weight: bold; margin-bottom: 6px; color: var(--accent-red);}
+        .cung-header .dai-van {
+            background: var(--gold-light); color: var(--dark-blue); border-radius: 50%; 
+            width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px;
+            border: 1px solid var(--gold); box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chinh-tinh { text-align: center; font-size: clamp(14px, 1.5vw, 17px); font-weight: 700; margin-bottom: 8px; min-height: 40px; letter-spacing: 0.5px;}
+        .chinh-tinh div { margin-bottom: 3px; }
+        
+        .phu-tinh-container { display: flex; justify-content: space-between; font-size: clamp(11px, 1.1vw, 13px); flex-grow: 1; margin-top: 5px; line-height: 1.4;}
+        .phu-tinh-left { text-align: left; width: 50%; color: #27ae60; font-weight: 600;}
+        .phu-tinh-right { text-align: right; width: 50%; color: var(--accent-red); font-weight: 500;}
+        .sao-luu { color: #d35400; text-align: right; margin-top: 6px; font-style: italic;}
+
+        .cung-footer {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            font-size: clamp(12px, 1vw, 14px); font-weight: 600; margin-top: auto; border-top: 1px dashed rgba(0,0,0,0.2); padding-top: 6px;
+        }
+        
+        .tuan-triet { 
+            text-align: center; background: var(--dark-blue); color: var(--gold); 
+            padding: 3px 0; font-size: clamp(11px, 1vw, 13px); font-weight: bold; margin-top: 6px; border-radius: 4px; letter-spacing: 1px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Màu Sao */
+        .tinh-do { color: #c0392b; text-shadow: 0px 0px 1px rgba(192,57,43,0.2); } 
+        .tinh-den { color: #1a1c2c; } 
+        .tinh-xam { color: #4a5568; }
+
+        /* === DICTIONARY STYLES === */
+        #tu_dien_container { display: none; }
+        .dict-search { 
+            border: 2px solid var(--gold); font-size: 16px; padding: 12px 25px 12px 45px; 
+            border-radius: 30px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); 
+            background-color: #fff;
+        }
+        .dict-item { 
+            background: #fff; padding: 20px; margin-bottom: 15px; 
+            border-left: 5px solid var(--gold); border-radius: 8px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04); transition: all 0.3s;
+        }
+        .dict-item:hover { transform: translateX(5px); border-left-color: var(--dark-blue); box-shadow: 0 5px 15px rgba(0,0,0,0.08);}
+        .dict-title { color: var(--dark-blue); font-weight: bold; font-size: 19px; margin-bottom: 8px; font-family: 'Playfair Display', serif;}
+        .dict-desc { font-size: 15px; line-height: 1.7; color: #4a5568; }
+        .dict-section-title { 
+            margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; 
+            color: var(--accent-red); font-weight: bold; font-size: 20px; letter-spacing: 1px;
+        }
+
+        /* === AI PROMPT AREA === */
+        #khu_vuc_ai { display: none; }
+        #ai_prompt_text {
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            background-color: #f8fafc !important;
+            color: #2d3748;
+            line-height: 1.6;
+            resize: none;
+        }
+        #ai_prompt_text:focus { outline: none; box-shadow: none; border-color: var(--gold); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- 1. FORM NHẬP LIỆU -->
+    <div class="premium-card">
+        <div class="card-header-custom rounded-top">
+            <h2 class="mb-0 font-weight-bold font-title"><i class="fa-solid fa-dharmachakra"></i> MAGNARISE TỬ VI</h2>
+        </div>
+        <div class="card-body-custom">
+            <form id="form_input">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <label>Họ và Tên</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-user"></i></span></div>
+                            <input type="text" class="form-control" name="ho_ten" value="Lê Hữu Đại">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-3">
+                        <label>Giới tính</label>
+                        <select name="gioi_tinh" class="form-control">
+                            <option value="nam">Nam</option>
+                            <option value="nu">Nữ</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <label>Loại lịch</label>
+                        <select name="loai_lich" class="form-control">
+                            <option value="1" selected>Dương lịch</option>
+                            <option value="2">Âm lịch</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <label>Năm xem hạn</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-calendar-check"></i></span></div>
+                            <input type="number" class="form-control" name="nam_xem" value="2026">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 mb-3">
+                        <label>Ngày sinh</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-calendar-day"></i></span></div>
+                            <input type="number" class="form-control" name="ngay" value="18">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mb-3">
+                        <label>Tháng sinh</label>
+                        <input type="number" class="form-control" name="thang" value="10">
+                    </div>
+                    <div class="col-lg-3 col-md-4 mb-3">
+                        <label>Năm sinh</label>
+                        <input type="number" class="form-control" name="nam" value="1986">
+                    </div>
+                    <div class="col-lg-3 col-md-12 mb-3">
+                        <label>Giờ sinh</label>
+                        <select name="gio_sinh" class="form-control">
+                            <option value="0">Tý (23h-1h)</option><option value="2">Sửu (1h-3h)</option><option value="4">Dần (3h-5h)</option>
+                            <option value="6">Mão (5h-7h)</option><option value="8">Thìn (7h-9h)</option><option value="10" selected>Tỵ (9h-11h)</option>
+                            <option value="12">Ngọ (11h-13h)</option><option value="14">Mùi (13h-15h)</option><option value="16">Thân (15h-17h)</option>
+                            <option value="18">Dậu (17h-19h)</option><option value="20">Tuất (19h-21h)</option><option value="22">Hợi (21h-23h)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-custom-primary font-title" onclick="runAnSaoLaSo()">
+                        <i class="fa-solid fa-star pr-1"></i> AN SAO LÁ SỐ
+                    </button>
+                    <button type="button" class="btn btn-custom-outline font-title ml-3" onclick="$('#tu_dien_container').slideToggle();">
+                        <i class="fa-solid fa-book-open pr-1"></i> TỪ ĐIỂN TỬ VI
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. KHU VỰC TỪ ĐIỂN -->
+    <div class="premium-card" id="tu_dien_container">
+        <div class="card-body-custom" style="background-color: #fafbfc;">
+            <h3 class="text-center font-weight-bold mb-4 font-title" style="color: var(--dark-blue);">TỪ ĐIỂN TRA CỨU SAO TỬ VI</h3>
+            <div class="position-relative mb-4">
+                <i class="fa-solid fa-search position-absolute" style="top: 15px; left: 20px; color: var(--gold); font-size: 18px;"></i>
+                <input type="text" id="search_input" class="form-control dict-search" placeholder="Nhập tên sao (VD: Tử Vi, Không Kiếp, Đào Hoa...)" onkeyup="filterDict()">
+            </div>
+            <div id="dict_content" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                <!-- Dữ liệu từ điển được JS render -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. KHU VỰC LÁ SỐ -->
+    <div class="premium-card" id="ket_qua_la_so" style="display: none; padding: 20px;">
+        <div class="laso-scroller">
+            <div class="laso-grid" id="main-grid">
+                <svg id="xung-chieu-svg"></svg>
+                
+                <!-- THIÊN BÀN -->
+                <div class="thien-ban">
+                    <h3 class="font-title">Magnarise Tử Vi</h3>
+                    <div class="thien-ban-info">
+                        <div class="tb-row"><span class="tb-label"><i class="fa-solid fa-user-astronaut pr-1"></i>Họ Tên:</span> <span id="tb_hoten" class="tb-value text-danger"></span></div>
+                        <div class="tb-row"><span class="tb-label"><i class="fa-solid fa-yin-yang pr-1"></i>Giới tính:</span> <span id="tb_amduong" class="tb-value"></span></div>
+                        <div class="tb-row"><span class="tb-label"><i class="fa-regular fa-calendar pr-1"></i>Năm sinh:</span> <span id="tb_namsinh" class="tb-value"></span></div>
+                        <div class="tb-row"><span class="tb-label"><i class="fa-solid fa-sun pr-1" style="color: #f39c12;"></i>Dương Lịch:</span> <span id="tb_duonglich" class="tb-value"></span></div>
+                        <div class="tb-row"><span class="tb-label"><i class="fa-solid fa-moon pr-1" style="color: #3498db;"></i>Âm Lịch:</span> <span id="tb_amlich" class="tb-value"></span></div>
+                        <div class="tb-row"><span class="tb-label"><i class="fa-regular fa-clock pr-1"></i>Giờ sinh:</span> <span id="tb_gio" class="tb-value"></span></div>
+                        
+                        <hr style="margin: 12px 0; border-color: rgba(0,0,0,0.1);">
+                        
+                        <div class="tb-row"><span class="tb-label">Bản Mệnh:</span> <span id="tb_hanhmenh" class="tb-value" style="color: var(--accent-red);"></span></div>
+                        <div class="tb-row"><span class="tb-label">Cục Số:</span> <span id="tb_cuc" class="tb-value"></span></div>
+                        <div class="tb-row"><span class="tb-label">Lý Số:</span> <span id="tb_menhcuc" class="tb-value" style="color:var(--dark-blue);"></span></div>
+                        
+                        <div class="mt-3 text-center" style="background: var(--gold-light); padding: 8px; border-radius: 6px; border: 1px solid var(--gold);">
+                            <span style="color: var(--dark-blue); font-weight: 600;">Xem hạn năm:</span> <span id="tb_namxem" class="font-weight-bold text-danger"></span> (<span id="tb_tuoi" class="font-weight-bold text-danger"></span> Tuổi Âm)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 12 CUNG -->
+                <div class="cung" id="cung-ty"></div><div class="cung" id="cung-ngo"></div>
+                <div class="cung" id="cung-mui"></div><div class="cung" id="cung-than"></div>
+                <div class="cung" id="cung-thin"></div><div class="cung" id="cung-dau"></div>
+                <div class="cung" id="cung-mao"></div><div class="cung" id="cung-tuat"></div>
+                <div class="cung" id="cung-dan"></div><div class="cung" id="cung-suu"></div>
+                <div class="cung" id="cung-ti"></div><div class="cung" id="cung-hoi"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. KHU VỰC AI TRÍCH XUẤT -->
+    <div class="premium-card" id="khu_vuc_ai">
+        <div class="card-body-custom" style="background-color: #f8faff; border-left: 6px solid #3498db;">
+            <h3 class="text-center font-weight-bold mb-3 font-title" style="color: #2980b9;">
+                <i class="fa-solid fa-robot"></i> TRỢ LÝ AI LUẬN GIẢI
+            </h3>
+            <p class="text-center text-muted mb-4" style="font-size: 15px;">Nhấn nút sao chép bên dưới và dán vào ChatGPT, Claude hoặc Gemini để nhờ AI phân tích toàn diện lá số.</p>
+            
+            <textarea id="ai_prompt_text" class="form-control" rows="8" readonly></textarea>
+            
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-success font-weight-bold px-5 py-2 font-title" style="border-radius: 30px; font-size: 16px; box-shadow: 0 5px 15px rgba(40,167,69,0.3); transition: all 0.3s;" onclick="copyPromptToClipboard()">
+                    <i class="fa-regular fa-copy pr-2"></i> SAO CHÉP PROMPT
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // =====================================================================
+    // 1. DATA TỪ ĐIỂN TỬ VI 
+    // =====================================================================
+    const TU_DIEN_DATA = [
+        {
+            group: "14 CHÍNH TINH (BẢN CHẤT CỐT LÕI)",
+            items: [
+                { name: "Tử Vi", desc: "Đế tinh, Âm Thổ. Tượng trưng cho quyền uy, lãnh đạo, năng lực tổ chức và giải ách. Ở Mệnh: thông minh, đôn hậu, uy nghi. Ở Quan Lộc/Tài Bạch: Sự nghiệp thăng tiến, quyền lực. Hợp: Tả Hữu, Khôi Việt, Xương Khúc. Kỵ: Không Kiếp, Tuần Triệt (trở thành 'cô quân' bất phùng thời)." },
+                { name: "Thiên Cơ", desc: "Thiện tinh, Âm Mộc. Tượng trưng cho trí tuệ, tham mưu, sự khéo léo và tính toán. Ở Mệnh: Nhân hậu, cơ trí, tháo vát. Ở Quan: Hợp làm tham mưu, chiến lược, kỹ thuật. Hợp: Cự Môn, Thái Âm, Thiên Lương. Hóa Kỵ thì hay suy nghĩ viển vông, lo âu." },
+                { name: "Thái Dương", desc: "Quý tinh, Dương Hỏa. Mặt trời, tượng trưng cho Quan Lộc, cha, chồng. Ở Mệnh (ban ngày): Thông minh, chính đại, nóng nảy, quyền bính. Ở Phu/Phụ: Ám chỉ tình trạng của phu quân/cha. Kỵ: Hóa Kỵ, Không Kiếp làm che mờ ánh sáng." },
+                { name: "Vũ Khúc", desc: "Tài tinh, Âm Kim. Tượng trưng cho tiền bạc, hành động, sự cương nghị và cô quả. Ở Tài Bạch/Điền Trạch: Phú quý, giàu sang. Rất sợ gặp Cô Thần, Quả Tú (gia tăng tính cô độc, khắc lục thân)." },
+                { name: "Thiên Đồng", desc: "Phúc tinh, Dương Thủy. Tượng trưng cho sự may mắn, nhàn hạ, trẻ con và sự thay đổi. Ở Mệnh: Tính tình hiền lành, đôi khi cả thèm chóng chán. Đóng ở Phu Thê: Gia đạo tốt nhưng đôi khi dễ thay đổi. Cần một chút sát tinh để kích phát ý chí." },
+                { name: "Liêm Trinh", desc: "Tù tinh & Đào hoa thứ 2, Âm Hỏa. Tượng trưng cho sự liêm khiết, thẳng thắn, nhưng cũng đào hoa, thị phi và luật pháp. Ở Mệnh/Quan: Đắc địa là tướng tài thao lược. Hãm địa: Dễ dính dáng kiện tụng, tù tội, đào hoa kiếp." },
+                { name: "Thiên Phủ", desc: "Tài tinh, Dương Thổ. Cái kho của Trời. Chủ về tài lộc, tích lũy, quản trị tài chính. Ở Mệnh/Tài/Điền: Có khả năng gìn giữ, phát triển tài sản rất mạnh. Cực kỳ sợ Tuần Triệt, Không Kiếp (ví như 'kho rỗng', tiền vào cửa trước ra cửa sau)." },
+                { name: "Thái Âm", desc: "Phú tinh, Âm Thủy. Mặt trăng, tượng trưng cho Điền trạch, mẹ, vợ, sự tàng trữ. Rất tốt khi đóng ở các cung ban đêm. Ở Điền Trạch: Cực kỳ giàu có về bất động sản. Ở Mệnh: Lãng mạn, nhẹ nhàng, thu hút." },
+                { name: "Tham Lang", desc: "Dâm tinh & Đào hoa chủ, Dương Mộc/Âm Thủy. Chủ về dục vọng, vật chất, tửu sắc và tu tập. Ở Mệnh: Đa tài, khéo léo, giao tiếp giỏi. Đắc địa gặp Hỏa/Linh tinh: Phát tài hoạnh phát. Gặp Không/Kiếp/Tuần/Triệt: Chuyển hóa thành người có căn tu, giác ngộ tâm linh." },
+                { name: "Cự Môn", desc: "Ám tinh, Âm Thủy. Chủ về ngôn ngữ, thị phi, sự phản biện. Ở Mệnh: Tài ăn nói đanh thép, hợp luật sư, giáo viên, ngoại giao. Hãm địa: Gây ra vạ miệng, tranh cãi, tai tiếng. Hợp với Thái Dương (ánh sáng xua đi sự u ám của Cự Môn)." },
+                { name: "Thiên Tướng", desc: "Quyền tinh/Ấn tinh, Dương Thủy. Vị tướng nắm ấn. Tượng trưng cho sự đôn hậu, trọng hình thức, tài quản lý, hỗ trợ. Ở Mệnh/Quan: Uy dũng, thành thật, bao dung. Rất kỵ gặp Tuần Triệt (Tướng mất đầu, Tướng gãy ấn)." },
+                { name: "Thiên Lương", desc: "Thọ tinh/Ấm tinh, Dương Thổ. Tượng trưng cho sự bảo bọc, người lớn tuổi, y sĩ, nhà giáo. Ở Mệnh/Phúc: Tăng tuổi thọ, giải tai ách. Tính cách nho phong đạo cốt. Rất hợp ở Quan Lộc (Sư phạm, Y tế)." },
+                { name: "Thất Sát", desc: "Dũng tinh/Quyền tinh, Dương Kim. Vị tướng xông pha nơi chiến trận. Chủ về sự uy dũng, sát phạt, táo bạo. Ở Mệnh/Quan: Dám nghĩ dám làm, quyết đoán. Cực kỵ các sát tinh mạnh (chết thảm, tai nạn). Hợp đi với Tử Vi (Gươm báu trao cho Vua)." },
+                { name: "Phá Quân", desc: "Hao tinh/Hung tinh, Âm Thủy. Sự phá cũ lập mới, tiên phong, tiêu hao. Ở Mệnh: Tính cách ương ngạnh, liều lĩnh. Đi đến đâu có sự xáo trộn đến đó. Hợp đi chung với Tử Vi hoặc lộc tinh để thành công trong kinh doanh đổi mới." }
+            ]
+        },
+        {
+            group: "CÁC PHỤ TINH QUAN TRỌNG (MÔI TRƯỜNG TÁC ĐỘNG)",
+            items: [
+                { name: "Lộc Tồn / Hóa Lộc", desc: "Tài tinh. Chủ tiền bạc, tài lộc, sự sinh sôi. Lộc Tồn cẩn trọng hơn, Hóa Lộc mở mang hơn. Sợ Không Kiếp (Lộc ảo)." },
+                { name: "Hóa Quyền", desc: "Chủ sự tranh đoạt, quyền lực, ý chí vươn lên mạnh mẽ." },
+                { name: "Hóa Khoa", desc: "Đệ nhất giải thần. Chủ về thi cử, danh tiếng, sự thông thái và giải cứu tai họa bằng trí tuệ." },
+                { name: "Hóa Kỵ", desc: "Ám tinh. Sự ghen ghét, thị phi, thu liễm, ám ảnh. Đóng đâu cản trở đó, nhưng cũng là sự tích tụ (ở Điền/Tài đôi khi giúp giữ của)." },
+                { name: "Tả Phụ / Hữu Bật", desc: "Quần thần của Tử Vi. Sự trợ lực từ bạn bè, đối tác, anh em (đồng trang lứa). Nếu ở Phu Thê dễ có sự can thiệp của người thứ 3." },
+                { name: "Thiên Khôi / Thiên Việt", desc: "Quý nhân lớn tuổi, cấp trên, hoặc cơ hội học hành đỗ đạt. Đi với Tử Vi thì đắc lệnh." },
+                { name: "Văn Xương / Văn Khúc", desc: "Văn tinh. Thi cử, giấy tờ, nghệ thuật, sự tinh tế, lãng mạn." },
+                { name: "Địa Không / Địa Kiếp", desc: "Đại Sát tinh. Sự tàn phá, mất mát đột ngột, tai họa. Tuy nhiên mang tư duy đột phá, phi truyền thống. Kỵ đóng Mệnh/Tài/Điền." },
+                { name: "Kình Dương / Đà La", desc: "Hình tinh & Kỵ tinh. Sự cố chấp, tổn thương cơ thể, chướng ngại. Kình Dương (chém/nóng), Đà La (lì lợm, dai dẳng)." },
+                { name: "Hỏa Tinh / Linh Tinh", desc: "Sát tinh. Sự nóng nảy, thiêu rụi, tốc độ, bạo phát. Hợp với Tham Lang thành cách hoạnh phát tài lộc." },
+                { name: "Cô Thần / Quả Tú", desc: "Sự cô độc, lẻ loi. Kỵ đóng Mệnh, Phu Thê, Tử Tức, Huynh Đệ. Rất tốt khi đóng Điền Trạch, Tài Bạch (Giữ của)." },
+                { name: "Đại Hao / Tiểu Hao", desc: "Sự hao tốn, di chuyển. Mệnh có Song Hao thường hào phóng, đổi chỗ ở liên tục. Rất hợp đi buôn bán." }
+            ]
+        },
+        {
+            group: "VÒNG TRÀNG SINH (CHU KỲ THỊNH SUY)",
+            items: [
+                { name: "Tràng Sinh", desc: "Trạng thái nảy nở, khai sinh, tuổi thọ, sức sống dồi dào. Tốt nhất khi nằm ở Mệnh, Tài, Phúc." },
+                { name: "Mộc Dục", desc: "Tắm gội, tuổi dậy thì. Có xu hướng đào hoa, ham muốn vật chất, bồng bột." },
+                { name: "Quan Đới", desc: "Khoác áo mão. Sự trưởng thành, khao khát công danh và chứng tỏ bản thân." },
+                { name: "Lâm Quan", desc: "Nhận chức. Sự phát triển mạnh mẽ, cống hiến, uy danh rực rỡ." },
+                { name: "Đế Vượng", desc: "Đỉnh cao nhất của sinh lực và vinh quang. Cực thịnh. Rất tốt ở Mệnh/Quan/Tài." },
+                { name: "Suy", desc: "Bắt đầu trượt dốc từ đỉnh cao, sự bảo thủ, yếu đi về thể chất." },
+                { name: "Bệnh", desc: "Bệnh tật, sự mệt mỏi, trì trệ. Kỵ ở Mệnh, Tật Ách." },
+                { name: "Tử", desc: "Sự kết thúc, tĩnh lặng, thu mình, nội tâm u sầu. Phù hợp cho tu tập." },
+                { name: "Mộ", desc: "Chôn cất. Sự bảo tồn, che giấu. Tốt cho Điền/Tài vì giữ của rất bền." },
+                { name: "Tuyệt", desc: "Tận cùng, không còn sinh khí. Sự bế tắc. Mệnh có Tuyệt cần phải cực kỳ cẩn trọng." },
+                { name: "Thai", desc: "Phôi thai. Sự hình thành mới, ngây thơ, khờ dại, thụ động nhưng có hy vọng." },
+                { name: "Dưỡng", desc: "Sự nuôi nấng, ấp ủ, chăm sóc. Rất tốt lành khi cần sự bảo trợ." }
+            ]
+        }
+    ];
+
+    function initDictionary() {
+        let html = '';
+        TU_DIEN_DATA.forEach(group => {
+            html += `<div class="dict-section-title"><i class="fa-solid fa-bookmark pr-2"></i>${group.group}</div>`;
+            group.items.forEach(item => {
+                html += `
+                <div class="dict-item" data-search="${item.name.toLowerCase()} ${item.desc.toLowerCase()}">
+                    <div class="dict-title">${item.name}</div>
+                    <div class="dict-desc">${item.desc}</div>
+                </div>`;
+            });
+        });
+        $('#dict_content').html(html);
+    }
+
+    function filterDict() {
+        let keyword = $('#search_input').val().toLowerCase().trim();
+        $('.dict-item').each(function() {
+            let searchData = $(this).attr('data-search');
+            if (searchData.includes(keyword)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        $('.dict-section-title').each(function() {
+            let hasVisibleItems = $(this).nextUntil('.dict-section-title', '.dict-item:visible').length > 0;
+            $(this).toggle(hasVisibleItems);
+        });
+    }
+
+    $(document).ready(function() {
+        initDictionary();
+        
+        $(".btn-success").hover(
+            function() { $(this).css("transform", "translateY(-2px)"); },
+            function() { $(this).css("transform", "translateY(0)"); }
+        );
+    });
+
+    const MAP_CUNG = {
+        "CUNG_TI": "cung-ti", "CUNG_SUU": "cung-suu", "CUNG_DAN": "cung-dan", "CUNG_MAO": "cung-mao",
+        "CUNG_THIN": "cung-thin", "CUNG_TY": "cung-ty", "CUNG_NGO": "cung-ngo", "CUNG_MUI": "cung-mui",
+        "CUNG_THAN": "cung-than", "CUNG_DAU": "cung-dau", "CUNG_TUAT": "cung-tuat", "CUNG_HOI": "cung-hoi"
+    };
+
+    function runAnSaoLaSo() {
+        $.ajax({
+            url: "/api/lap-la-so", type: "POST", data: $('#form_input').serialize(), dataType: "JSON",
+            success: function(data) {
+                $('#ket_qua_la_so').fadeIn(400);
+                let tb = data.THIEN_BAN;
+                $('#tb_hoten').text(tb.ho_ten);
+                $('#tb_namsinh').text($('#form_input [name="nam"]').val());
+                $('#tb_duonglich').text(tb.ngay_duong_str);
+                $('#tb_amlich').text(tb.ngay_am_str);
+                $('#tb_gio').text(tb.gio_am);
+                $('#tb_amduong').text(tb.am_duong);
+                $('#tb_cuc').text(tb.cuc);
+                $('#tb_hanhmenh').text(tb.hanh_menh.replace('Mệnh: ', ''));
+                $('#tb_menhcuc').text(tb.menh_cuc);
+                $('#tb_namxem').text(tb.nam_xem_str);
+                $('#tb_tuoi').text(tb.tuoi_am);
+
+                for (let key in MAP_CUNG) {
+                    if (data[key]) renderCung(MAP_CUNG[key], data[key]);
+                }
+                
+                setTimeout(drawXungChieuLines, 200);
+
+                let aiPrompt = generateAIPrompt(data);
+                $('#ai_prompt_text').val(aiPrompt);
+                $('#khu_vuc_ai').fadeIn(400);
+                
+                $('html, body').animate({
+                    scrollTop: $("#ket_qua_la_so").offset().top - 30
+                }, 800);
+            },
+            error: function(err) { alert("Lỗi khi kết nối tới Server. Vui lòng kiểm tra lại!"); console.log(err); }
+        });
+    }
+
+    function renderCung(divId, d) {
+        if (d.IS_TIEU_HAN) {
+            $(`#${divId}`).addClass("highlight-tieuhan");
+        } else {
+            $(`#${divId}`).removeClass("highlight-tieuhan");
+        }
+
+        let ctHtml = "";
+        d.CHINH_TINH.forEach(s => {
+            let clz = (s.includes('Tử Vi') || s.includes('Thái Dương') || s.includes('Liêm Trinh') || s.includes('Thiên Phủ')) ? 'tinh-do' : 
+                      (s.includes('Vũ Khúc') || s.includes('Thất Sát')) ? 'tinh-xam' : 'tinh-den';
+            ctHtml += `<div class="${clz}">${s}</div>`;
+        });
+
+        let ptTot = d.PHU_TINH_TOT.map(s => `<div>${s}</div>`).join('');
+        let ptXau = d.PHU_TINH_XAU.map(s => `<div>${s}</div>`).join('');
+        let luuStr = d.SAO_LUU.map(s => `<div>${s}</div>`).join('');
+        
+        let ttHtml = d.TUAN_TRIET ? `<div class="tuan-triet">${d.TUAN_TRIET}</div>` : '';
+        let badgeHtml = d.IS_TIEU_HAN ? `<div class="tieu-han-badge"><i class="fa-solid fa-fire pr-1"></i> TIỂU HẠN</div>` : '';
+
+        // XỬ LÝ RENDER PHÚ TỬ VI (NẾU CÓ)
+        let phuHtml = '';
+        if (d.PHU_TU_VI && d.PHU_TU_VI.length > 0) {
+            phuHtml += `<div style="margin-top: 8px; padding-top: 5px; border-top: 1px dotted #ccc;">`;
+            d.PHU_TU_VI.forEach(p => {
+                phuHtml += `<div style="font-size: 11px; color: var(--gold); font-weight: bold;" title="${p.giai_nghia}">📜 ${p.cau_phu}</div>`;
+            });
+            phuHtml += `</div>`;
+        }
+
+        let html = `
+            ${badgeHtml}
+            <div class="cung-header">
+                <span>${d.THIEN_CAN_CUNG}</span>
+                <span style="font-weight:800; font-size: 16px; color: var(--dark-blue); font-family: 'Playfair Display', serif;">${d.TEN_CUNG}</span>
+                <span class="dai-van">${d.NAM_DAI_VAN}</span>
+            </div>
+            <div class="chinh-tinh">${ctHtml}</div>
+            <div class="phu-tinh-container">
+                <div class="phu-tinh-left">${ptTot}</div>
+                <div class="phu-tinh-right">
+                    ${ptXau}
+                    <div class="sao-luu">${luuStr}</div>
+                </div>
+            </div>
+            ${ttHtml}
+            ${phuHtml} <!-- HIỂN THỊ PHÚ Ở ĐÂY -->
+            <div class="cung-footer">
+                <span style="color: #718096; font-weight:normal; font-size:12px;"><i class="fa-regular fa-clock pr-1"></i>Tháng ${d.THANG_LUU_NIEN}</span>
+                <span style="color: var(--accent-red);">${d.DAT}</span>
+            </div>
+        `;
+        $(`#${divId}`).html(html);
+    }
+
+    function drawXungChieuLines() {
+        const svg = document.getElementById('xung-chieu-svg');
+        svg.innerHTML = `
+            <defs>
+                <marker id="arrowHead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#d4af37" />
+                </marker>
+            </defs>
+        `;
+        const pairs = [['cung-ty', 'cung-hoi'], ['cung-ngo', 'cung-ti'], ['cung-mui', 'cung-suu'], ['cung-than', 'cung-dan'], ['cung-dau', 'cung-mao'], ['cung-tuat', 'cung-thin']];
+        const gridRect = document.getElementById('main-grid').getBoundingClientRect();
+
+        pairs.forEach((pair) => {
+            const el1 = document.getElementById(pair[0]);
+            const el2 = document.getElementById(pair[1]);
+            const rect1 = el1.getBoundingClientRect();
+            const rect2 = el2.getBoundingClientRect();
+            
+            const x1 = rect1.left + rect1.width / 2 - gridRect.left;
+            const y1 = rect1.top + rect1.height / 2 - gridRect.top;
+            const x2 = rect2.left + rect2.width / 2 - gridRect.left;
+            const y2 = rect2.top + rect2.height / 2 - gridRect.top;
+            
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1); line.setAttribute('y1', y1); line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+            line.setAttribute('stroke', '#d4af37'); line.setAttribute('stroke-width', '1.5');
+            line.setAttribute('stroke-dasharray', '6,4'); line.setAttribute('opacity', '0.2');
+            line.setAttribute('marker-start', 'url(#arrowHead)'); line.setAttribute('marker-end', 'url(#arrowHead)');
+            line.setAttribute('class', 'xung-chieu-line');
+            svg.appendChild(line);
+
+            [el1, el2].forEach(el => {
+                el.addEventListener('mouseenter', () => { line.setAttribute('opacity', '0.9'); line.setAttribute('stroke-width', '2.5'); });
+                el.addEventListener('mouseleave', () => { line.setAttribute('opacity', '0.2'); line.setAttribute('stroke-width', '1.5'); });
+            });
+        });
+    }
+
+    window.addEventListener('resize', () => { if ($('#ket_qua_la_so').is(':visible')) drawXungChieuLines(); });
+
+    // 1. Mảng định nghĩa 12 cung theo đúng thứ tự Địa Chi (0: Tý -> 11: Hợi)
+    const CHI_ORDER = ["CUNG_TI", "CUNG_SUU", "CUNG_DAN", "CUNG_MAO", "CUNG_THIN", "CUNG_TY", 
+                       "CUNG_NGO", "CUNG_MUI", "CUNG_THAN", "CUNG_DAU", "CUNG_TUAT", "CUNG_HOI"];
+
+    // 2. Hàm phụ trợ lấy thông tin vắn tắt (Tên Cung + Chính Tinh)
+    function getHouseSummary(data, key) {
+        if (!data[key]) return "Không rõ";
+        let tenCung = data[key].TEN_CUNG.replace(" <Thân>", ""); // Lược bỏ tag <Thân> để chuỗi gọn hơn
+        let chinhTinh = data[key].CHINH_TINH.length > 0 ? data[key].CHINH_TINH.join(', ') : "Vô Chính Diệu";
+        return `${tenCung} (${chinhTinh})`;
+    }
+
+    // 3. Hàm tạo Prompt mới (thay thế hàm cũ)
+    function generateAIPrompt(data) {
+        let tb = data.THIEN_BAN;
+        let prompt = `Đóng vai một chuyên gia Tử Vi phương Đông uyên thâm. Dưới đây là toàn bộ dữ liệu lá số Tử Vi của tôi đã được trích xuất chính xác. Dựa trên những dữ liệu này, hãy luận giải chi tiết, khách quan và dễ hiểu lá số của tôi theo các yêu cầu phía dưới.\n\n`;
+        
+        prompt += `--- [1] THÔNG TIN THIÊN BÀN ---\n- Giới tính: ${tb.am_duong}\n- Năm sinh âm lịch: ${tb.ngay_am_str}\n- Giờ sinh âm lịch: ${tb.gio_am}\n- Bản Mệnh: ${tb.hanh_menh}\n- Cục: ${tb.cuc}\n- Âm Dương / Lý số: ${tb.menh_cuc}\n- Xem hạn cho năm: ${tb.nam_xem_str} (${tb.tuoi_am} tuổi âm)\n\n--- [2] THÔNG TIN 12 CUNG, SAO TỌA THỦ VÀ THẾ TRẬN KHÔNG GIAN ---\n`;
+        
+        let tieuHanCung = ""; 
+        
+        // Thay vì duyệt MAP_CUNG dạng Object, ta duyệt bằng mảng CHI_ORDER (0 -> 11) để dễ tính toán
+        for (let i = 0; i < 12; i++) {
+            let key = CHI_ORDER[i];
+            if (data[key]) {
+                let c = data[key];
+                prompt += `\n* Cung ${c.TEN_CUNG} (Tại ${c.THIEN_CAN_CUNG}):\n`;
+                if (c.CHINH_TINH.length > 0) prompt += `  + Chính tinh: ${c.CHINH_TINH.join(', ')}\n`;
+                if (c.PHU_TINH_TOT.length > 0) prompt += `  + Cát tinh / Trợ tinh: ${c.PHU_TINH_TOT.join(', ')}\n`;
+                if (c.PHU_TINH_XAU.length > 0) prompt += `  + Sát tinh / Bại tinh: ${c.PHU_TINH_XAU.join(', ')}\n`;
+                if (c.SAO_LUU.length > 0) prompt += `  + Sao Lưu (Năm ${tb.nam_xem}): ${c.SAO_LUU.join(', ')}\n`;
+                if (c.TUAN_TRIET) prompt += `  + Bị án ngữ bởi: ${c.TUAN_TRIET}\n`;
+                
+                // --- THUẬT TOÁN TÍNH TAM PHƯƠNG TỨ CHÍNH & NHỊ HỢP ---
+                // Modulo 12 giúp quay vòng tính toán khi vượt qua mốc Hợi (11)
+                let idxXung = (i + 6) % 12;       // Đối cung (cách 6 cung)
+                let idxTam1 = (i + 4) % 12;       // Tam hợp 1 (cách 4 cung)
+                let idxTam2 = (i + 8) % 12;       // Tam hợp 2 (cách 8 cung)
+                let idxNhi  = (13 - i) % 12;      // Nhị hợp (Công thức đối xứng trục dọc Tý - Ngọ)
+
+                let xungStr = getHouseSummary(data, CHI_ORDER[idxXung]);
+                let tam1Str = getHouseSummary(data, CHI_ORDER[idxTam1]);
+                let tam2Str = getHouseSummary(data, CHI_ORDER[idxTam2]);
+                let nhiStr  = getHouseSummary(data, CHI_ORDER[idxNhi]);
+
+                prompt += `  + XUNG CHIẾU (Lực trực diện) từ: ${xungStr}\n`;
+                prompt += `  + TAM HỢP (Lực cộng hưởng) từ: ${tam1Str} và ${tam2Str}\n`;
+                prompt += `  + NHỊ HỢP (Lực tác động ngầm) từ: ${nhiStr}\n`;
+                // --------------------------------------------------------
+
+                prompt += `  + Năm bắt đầu Đại Vận: ${c.NAM_DAI_VAN}\n`;
+                if (c.IS_TIEU_HAN) { 
+                    prompt += `  + LƯU Ý: Đây là cung TIỂU HẠN của năm ${tb.nam_xem}.\n`; 
+                    tieuHanCung = c.TEN_CUNG; 
+                }
+            }
+        }
+
+        // Cập nhật lại câu lệnh prompt cho AI
+        prompt += `\n--- [3] YÊU CẦU PHÂN TÍCH CHUYÊN SÂU ---\n`;
+        prompt += `1/ Tổng Quan Cốt Cách (Thiên Bàn): Phân tích chi tiết sự tương sinh/tương khắc giữa Bản Mệnh và Cục, yếu tố Âm Dương thuận/nghịch lý. Đánh giá tổng quan mức độ đắc Thiên thời, Địa lợi, Nhân hòa của lá số này.\n`;
+        prompt += `2/ Giải Mã Chi Tiết Toàn Bộ 12 Cung (Tam Phương Tứ Chính): Phân tích sâu sắc từng cung một. BẮT BUỘC phải ứng dụng nhãn quan không gian (Tam Hợp, Xung Chiếu, Nhị Hợp) đã cung cấp ở trên để luận giải. Ví dụ: Bản cung Vô Chính Diệu thì mượn chính tinh Xung Chiếu thế nào? Cung Nhị Hợp mang lại điều hung hiểm hay may mắn ngầm gì? Chú trọng ưu/nhược điểm và phương pháp "hóa giải" khi gặp Tuần/Triệt hoặc Sát tinh.\n`;
+        prompt += `3/ Phân Tích Cung Thân (Hậu Vận): Nửa đời sau của tôi hướng về đâu? Sự chuyển biến tâm lý, hoàn cảnh sống và các giá trị cốt lõi từ Mệnh sang Thân diễn ra như thế nào?\n`;
+        prompt += `4/ Bản Đồ Đại Vận Trọn Đời (Đến 100 tuổi): Trình bày rõ ràng và phân tích tổng quan từng Đại Vận 10 năm một trong suốt cuộc đời. Đánh giá đâu là thời kỳ hoàng kim (đỉnh cao), đâu là thời kỳ trũng (thử thách) cần phòng thủ.\n`;
+        prompt += `5/ Dự Báo Chi Tiết Tiểu Vận 10 Năm Tới: Hiện tại năm ${tb.nam_xem} Tiểu Hạn đang nằm tại cung ${tieuHanCung}. Hãy tự tính toán dịch chuyển cung Tiểu Hạn theo đúng nguyên tắc Tử Vi để luận giải chi tiết diễn biến cho từng năm một trong 10 năm liên tiếp (Từ năm ${tb.nam_xem} đến năm ${tb.nam_xem + 9}). Với mỗi năm, hãy nêu rõ: Cơ hội, Thách thức và Lời khuyên hành động cụ thể.\n`;
+        
+        return prompt;
+    }
+
+    function copyPromptToClipboard() {
+        let copyText = document.getElementById("ai_prompt_text");
+        copyText.select(); copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value).then(function() {
+            alert("✅ Đã sao chép toàn bộ thông tin lá số!\nGiờ bạn có thể dán vào ChatGPT / Gemini / Claude để nhờ AI phân tích.");
+        });
+    }
+</script>
+</body>
+</html>

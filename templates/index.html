@@ -743,6 +743,8 @@
                 if (c.PHU_TINH_XAU.length > 0) prompt += `  + Sát tinh / Bại tinh: ${c.PHU_TINH_XAU.join(', ')}\n`;
                 if (c.SAO_LUU.length > 0) prompt += `  + Sao Lưu (Năm ${tb.nam_xem}): ${c.SAO_LUU.join(', ')}\n`;
                 if (c.TUAN_TRIET) prompt += `  + Bị án ngữ bởi: ${c.TUAN_TRIET}\n`;
+                // BỔ SUNG DÒNG NÀY ĐỂ ĐƯA VÒNG TRƯỜNG SINH VÀO PROMPT:
+                if (c.DAT) prompt += `  + Vòng Trường Sinh: ${c.DAT}\n`;
                 
                 // --- THUẬT TOÁN TÍNH TAM PHƯƠNG TỨ CHÍNH & NHỊ HỢP ---
                 // Modulo 12 giúp quay vòng tính toán khi vượt qua mốc Hợi (11)
@@ -776,7 +778,8 @@
         prompt += `3/ Phân Tích Cung Thân (Hậu Vận): Nửa đời sau của tôi hướng về đâu? Sự chuyển biến tâm lý, hoàn cảnh sống và các giá trị cốt lõi từ Mệnh sang Thân diễn ra như thế nào?\n`;
         prompt += `4/ Bản Đồ Đại Vận Trọn Đời (Đến 100 tuổi): Trình bày rõ ràng và phân tích tổng quan từng Đại Vận 10 năm một trong suốt cuộc đời. Đánh giá đâu là thời kỳ hoàng kim (đỉnh cao), đâu là thời kỳ trũng (thử thách) cần phòng thủ.\n`;
         prompt += `5/ Dự Báo Chi Tiết Tiểu Vận 10 Năm Tới: Hiện tại năm ${tb.nam_xem} Tiểu Hạn đang nằm tại cung ${tieuHanCung}. Hãy tự tính toán dịch chuyển cung Tiểu Hạn theo đúng nguyên tắc Tử Vi để luận giải chi tiết diễn biến cho từng năm một trong 10 năm liên tiếp (Từ năm ${tb.nam_xem} đến năm ${tb.nam_xem + 9}). Với mỗi năm, hãy nêu rõ: Cơ hội, Thách thức và Lời khuyên hành động cụ thể.\n`;
-        
+        prompt += `6/ Phân Tích Vòng Trường Sinh: Đánh giá trạng thái chu kỳ (nảy nở, cực thịnh, suy tàn hay bế tắc) của các cung trọng điểm (như Mệnh, Tài Bạch, Quan Lộc, Điền Trạch) dựa trên sao thuộc vòng Trường Sinh tọa thủ. Liên kết năng lượng của Vòng Trường Sinh với các Chính tinh để đưa ra lời khuyên về tư duy chiến lược (tiến công hay phòng thủ).\n`;
+
         return prompt;
     }
 

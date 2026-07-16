@@ -579,6 +579,23 @@
         "CUNG_THAN": "cung-than", "CUNG_DAU": "cung-dau", "CUNG_TUAT": "cung-tuat", "CUNG_HOI": "cung-hoi"
     };
 
+    // --- BỔ SUNG MỚI: TỪ ĐIỂN NGŨ HÀNH CHÍNH TINH & ĐỊA CHI ---
+    const NGU_HANH_CHINH_TINH = {
+        "Tử Vi": "🌍 Thổ", "Thiên Cơ": "🌲 Mộc", "Thái Dương": "🔥 Hỏa", "Vũ Khúc": "⚙️ Kim",
+        "Thiên Đồng": "💧 Thủy", "Liêm Trinh": "🔥 Hỏa", "Thiên Phủ": "🌍 Thổ", "Thái Âm": "💧 Thủy",
+        "Tham Lang": "💧 Thủy", "Cự Môn": "💧 Thủy", "Thiên Tướng": "💧 Thủy", "Thiên Lương": "🌍 Thổ",
+        "Thất Sát": "⚙️ Kim", "Phá Quân": "💧 Thủy"
+    };
+
+    const NGU_HANH_CUNG = {
+        "Tý": "💧 Thủy", "Hợi": "💧 Thủy", 
+        "Dần": "🌲 Mộc", "Mão": "🌲 Mộc",
+        "Tỵ": "🔥 Hỏa", "Ngọ": "🔥 Hỏa",
+        "Thân": "⚙️ Kim", "Dậu": "⚙️ Kim",
+        "Thìn": "🌍 Thổ", "Tuất": "🌍 Thổ", "Sửu": "🌍 Thổ", "Mùi": "🌍 Thổ"
+    };
+    // ---------------------------------------------------------
+
     function runAnSaoLaSo() {
         $.ajax({
             url: "/api/lap-la-so", type: "POST", data: $('#form_input').serialize(), dataType: "JSON",
@@ -622,11 +639,20 @@
             $(`#${divId}`).removeClass("highlight-tieuhan");
         }
 
+        // --- CẬP NHẬT MỚI: Lấy hành của Cung ---
+        let diaChi = d.THIEN_CAN_CUNG.split(".")[1] || "";
+        let hanhCung = NGU_HANH_CUNG[diaChi] ? ` - ${NGU_HANH_CUNG[diaChi]}` : "";
+
+        // --- CẬP NHẬT MỚI: Thêm biểu tượng ngũ hành vào Chính Tinh ---
         let ctHtml = "";
         d.CHINH_TINH.forEach(s => {
             let clz = (s.includes('Tử Vi') || s.includes('Thái Dương') || s.includes('Liêm Trinh') || s.includes('Thiên Phủ')) ? 'tinh-do' : 
                       (s.includes('Vũ Khúc') || s.includes('Thất Sát')) ? 'tinh-xam' : 'tinh-den';
-            ctHtml += `<div class="${clz}">${s}</div>`;
+            
+            let baseName = s.split(" (")[0].trim();
+            let elementStr = NGU_HANH_CHINH_TINH[baseName] ? `<span style="font-size:11px; font-weight:normal; color:#555;"> - ${NGU_HANH_CHINH_TINH[baseName]}</span>` : '';
+            
+            ctHtml += `<div class="${clz}">${s}${elementStr}</div>`;
         });
 
         let ptTot = d.PHU_TINH_TOT.map(s => `<div>${s}</div>`).join('');
@@ -636,7 +662,6 @@
         let ttHtml = d.TUAN_TRIET ? `<div class="tuan-triet">${d.TUAN_TRIET}</div>` : '';
         let badgeHtml = d.IS_TIEU_HAN ? `<div class="tieu-han-badge"><i class="fa-solid fa-fire pr-1"></i> TIỂU HẠN</div>` : '';
 
-        // XỬ LÝ RENDER PHÚ TỬ VI (NẾU CÓ)
         let phuHtml = '';
         if (d.PHU_TU_VI && d.PHU_TU_VI.length > 0) {
             phuHtml += `<div style="margin-top: 8px; padding-top: 5px; border-top: 1px dotted #ccc;">`;
@@ -646,10 +671,11 @@
             phuHtml += `</div>`;
         }
 
+        // --- CẬP NHẬT MỚI: Đưa Hành Cung vào Header ---
         let html = `
             ${badgeHtml}
             <div class="cung-header">
-                <span>${d.THIEN_CAN_CUNG}</span>
+                <span>${d.THIEN_CAN_CUNG}<span style="font-size:11px; font-weight:normal; color:#666;">${hanhCung}</span></span>
                 <span style="font-weight:800; font-size: 16px; color: var(--dark-blue); font-family: 'Playfair Display', serif;">${d.TEN_CUNG}</span>
                 <span class="dai-van">${d.NAM_DAI_VAN}</span>
             </div>
@@ -662,7 +688,7 @@
                 </div>
             </div>
             ${ttHtml}
-            ${phuHtml} <!-- HIỂN THỊ PHÚ Ở ĐÂY -->
+            ${phuHtml}
             <div class="cung-footer">
                 <span style="color: #718096; font-weight:normal; font-size:12px;"><i class="fa-regular fa-clock pr-1"></i>Tháng ${d.THANG_LUU_NIEN}</span>
                 <span style="color: var(--accent-red);">${d.DAT}</span>
@@ -732,26 +758,36 @@
         
         let tieuHanCung = ""; 
         
-        // Thay vì duyệt MAP_CUNG dạng Object, ta duyệt bằng mảng CHI_ORDER (0 -> 11) để dễ tính toán
         for (let i = 0; i < 12; i++) {
             let key = CHI_ORDER[i];
             if (data[key]) {
                 let c = data[key];
-                prompt += `\n* Cung ${c.TEN_CUNG} (Tại ${c.THIEN_CAN_CUNG}):\n`;
-                if (c.CHINH_TINH.length > 0) prompt += `  + Chính tinh: ${c.CHINH_TINH.join(', ')}\n`;
+                
+                // --- CẬP NHẬT MỚI: Xử lý Hành Cung và Hành Chính Tinh ---
+                let diaChi = c.THIEN_CAN_CUNG.split(".")[1] || "";
+                let hanhCung = NGU_HANH_CUNG[diaChi] || "";
+                
+                prompt += `\n* Cung ${c.TEN_CUNG} (Tại ${c.THIEN_CAN_CUNG} - Hành ${hanhCung}):\n`;
+                
+                if (c.CHINH_TINH.length > 0) {
+                    let ctArr = c.CHINH_TINH.map(s => {
+                        let baseName = s.split(" (")[0].trim();
+                        let element = NGU_HANH_CHINH_TINH[baseName] ? `[${NGU_HANH_CHINH_TINH[baseName]}]` : "";
+                        return `${s} ${element}`;
+                    });
+                    prompt += `  + Chính tinh: ${ctArr.join(', ')}\n`;
+                }
+                
                 if (c.PHU_TINH_TOT.length > 0) prompt += `  + Cát tinh / Trợ tinh: ${c.PHU_TINH_TOT.join(', ')}\n`;
                 if (c.PHU_TINH_XAU.length > 0) prompt += `  + Sát tinh / Bại tinh: ${c.PHU_TINH_XAU.join(', ')}\n`;
                 if (c.SAO_LUU.length > 0) prompt += `  + Sao Lưu (Năm ${tb.nam_xem}): ${c.SAO_LUU.join(', ')}\n`;
                 if (c.TUAN_TRIET) prompt += `  + Bị án ngữ bởi: ${c.TUAN_TRIET}\n`;
-                // BỔ SUNG DÒNG NÀY ĐỂ ĐƯA VÒNG TRƯỜNG SINH VÀO PROMPT:
                 if (c.DAT) prompt += `  + Vòng Trường Sinh: ${c.DAT}\n`;
                 
-                // --- THUẬT TOÁN TÍNH TAM PHƯƠNG TỨ CHÍNH & NHỊ HỢP ---
-                // Modulo 12 giúp quay vòng tính toán khi vượt qua mốc Hợi (11)
-                let idxXung = (i + 6) % 12;       // Đối cung (cách 6 cung)
-                let idxTam1 = (i + 4) % 12;       // Tam hợp 1 (cách 4 cung)
-                let idxTam2 = (i + 8) % 12;       // Tam hợp 2 (cách 8 cung)
-                let idxNhi  = (13 - i) % 12;      // Nhị hợp (Công thức đối xứng trục dọc Tý - Ngọ)
+                let idxXung = (i + 6) % 12;      
+                let idxTam1 = (i + 4) % 12;       
+                let idxTam2 = (i + 8) % 12;       
+                let idxNhi  = (13 - i) % 12;      
 
                 let xungStr = getHouseSummary(data, CHI_ORDER[idxXung]);
                 let tam1Str = getHouseSummary(data, CHI_ORDER[idxTam1]);
@@ -761,8 +797,7 @@
                 prompt += `  + XUNG CHIẾU (Lực trực diện) từ: ${xungStr}\n`;
                 prompt += `  + TAM HỢP (Lực cộng hưởng) từ: ${tam1Str} và ${tam2Str}\n`;
                 prompt += `  + NHỊ HỢP (Lực tác động ngầm) từ: ${nhiStr}\n`;
-                // --------------------------------------------------------
-
+                
                 prompt += `  + Năm bắt đầu Đại Vận: ${c.NAM_DAI_VAN}\n`;
                 if (c.IS_TIEU_HAN) { 
                     prompt += `  + LƯU Ý: Đây là cung TIỂU HẠN của năm ${tb.nam_xem}.\n`; 
@@ -771,14 +806,13 @@
             }
         }
 
-        // Cập nhật lại câu lệnh prompt cho AI
         prompt += `\n--- [3] YÊU CẦU PHÂN TÍCH CHUYÊN SÂU ---\n`;
         prompt += `1/ Tổng Quan Cốt Cách (Thiên Bàn): Phân tích chi tiết sự tương sinh/tương khắc giữa Bản Mệnh và Cục, yếu tố Âm Dương thuận/nghịch lý. Đánh giá tổng quan mức độ đắc Thiên thời, Địa lợi, Nhân hòa của lá số này.\n`;
-        prompt += `2/ Giải Mã Chi Tiết Toàn Bộ 12 Cung (Tam Phương Tứ Chính): Phân tích sâu sắc từng cung một. BẮT BUỘC phải ứng dụng nhãn quan không gian (Tam Hợp, Xung Chiếu, Nhị Hợp) đã cung cấp ở trên để luận giải. Ví dụ: Bản cung Vô Chính Diệu thì mượn chính tinh Xung Chiếu thế nào? Cung Nhị Hợp mang lại điều hung hiểm hay may mắn ngầm gì? Chú trọng ưu/nhược điểm và phương pháp "hóa giải" khi gặp Tuần/Triệt hoặc Sát tinh.\n`;
+        prompt += `2/ Giải Mã Chi Tiết Toàn Bộ 12 Cung (Tam Phương Tứ Chính): Phân tích sâu sắc từng cung một. BẮT BUỘC phải ứng dụng nhãn quan không gian (Tam Hợp, Xung Chiếu, Nhị Hợp) và tương tác Ngũ Hành (Hành Cung sinh/khắc Hành Sao sinh/khắc Hành Bản Mệnh) đã cung cấp ở trên để luận giải.\n`;
         prompt += `3/ Phân Tích Cung Thân (Hậu Vận): Nửa đời sau của tôi hướng về đâu? Sự chuyển biến tâm lý, hoàn cảnh sống và các giá trị cốt lõi từ Mệnh sang Thân diễn ra như thế nào?\n`;
         prompt += `4/ Bản Đồ Đại Vận Trọn Đời (Đến 100 tuổi): Trình bày rõ ràng và phân tích tổng quan từng Đại Vận 10 năm một trong suốt cuộc đời. Đánh giá đâu là thời kỳ hoàng kim (đỉnh cao), đâu là thời kỳ trũng (thử thách) cần phòng thủ.\n`;
         prompt += `5/ Dự Báo Chi Tiết Tiểu Vận 10 Năm Tới: Hiện tại năm ${tb.nam_xem} Tiểu Hạn đang nằm tại cung ${tieuHanCung}. Hãy tự tính toán dịch chuyển cung Tiểu Hạn theo đúng nguyên tắc Tử Vi để luận giải chi tiết diễn biến cho từng năm một trong 10 năm liên tiếp (Từ năm ${tb.nam_xem} đến năm ${tb.nam_xem + 9}). Với mỗi năm, hãy nêu rõ: Cơ hội, Thách thức và Lời khuyên hành động cụ thể.\n`;
-        prompt += `6/ Phân Tích Vòng Trường Sinh: Đánh giá trạng thái chu kỳ (nảy nở, cực thịnh, suy tàn hay bế tắc) của các cung trọng điểm (như Mệnh, Tài Bạch, Quan Lộc, Điền Trạch) dựa trên sao thuộc vòng Trường Sinh tọa thủ. Liên kết năng lượng của Vòng Trường Sinh với các Chính tinh để đưa ra lời khuyên về tư duy chiến lược (tiến công hay phòng thủ).\n`;
+        prompt += `6/ Phân Tích Vòng Trường Sinh: Đánh giá trạng thái chu kỳ (nảy nở, cực thịnh, suy tàn hay bế tắc) của các cung trọng điểm dựa trên sao thuộc vòng Trường Sinh tọa thủ. Liên kết năng lượng của Vòng Trường Sinh với các Chính tinh để đưa ra lời khuyên về tư duy chiến lược.\n`;
 
         return prompt;
     }

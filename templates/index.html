@@ -334,14 +334,12 @@
                         <label>Họ và Tên</label>
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-user"></i></span></div>
-                            <!-- Xóa value "Lê Hữu Đại" -->
                             <input type="text" class="form-control" name="ho_ten" value="" placeholder="Nhập họ và tên">
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-6 mb-3">
                         <label>Giới tính</label>
                         <select name="gioi_tinh" class="form-control">
-                            <option value="" selected disabled>Chọn</option>
                             <option value="nam">Nam</option>
                             <option value="nu">Nữ</option>
                         </select>
@@ -357,8 +355,7 @@
                         <label>Năm xem hạn</label>
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-calendar-check"></i></span></div>
-                            <!-- Xóa value "2026" -->
-                            <input type="number" class="form-control" name="nam_xem" value="" placeholder="VD: 2026">
+                            <input type="number" class="form-control" name="nam_xem" value="2026">
                         </div>
                     </div>
                 </div>
@@ -368,25 +365,21 @@
                         <label>Ngày sinh</label>
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-calendar-day"></i></span></div>
-                            <!-- Xóa value "18" -->
                             <input type="number" class="form-control" name="ngay" value="" placeholder="Ngày">
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-4 mb-3">
                         <label>Tháng sinh</label>
-                        <!-- Xóa value "10" -->
                         <input type="number" class="form-control" name="thang" value="" placeholder="Tháng">
                     </div>
                     <div class="col-lg-3 col-md-4 mb-3">
                         <label>Năm sinh</label>
-                        <!-- Xóa value "1986" -->
                         <input type="number" class="form-control" name="nam" value="" placeholder="Năm">
                     </div>
                     <div class="col-lg-3 col-md-12 mb-3">
                         <label>Giờ sinh</label>
                         <select name="gio_sinh" class="form-control">
-                            <option value="" selected disabled>Chọn giờ sinh</option>
-                            <option value="0">Tý (23h-1h)</option>
+                            <option value="0" selected>Tý (23h-1h)</option>
                             <option value="2">Sửu (1h-3h)</option>
                             <option value="4">Dần (3h-5h)</option>
                             <option value="6">Mão (5h-7h)</option>
@@ -401,7 +394,7 @@
                         </select>
                     </div>
                 </div>
-                <!-- Phần nút bấm giữ nguyên -->
+
                 <div class="text-center mt-4">
                     <button type="button" class="btn btn-custom-primary font-title" onclick="runAnSaoLaSo()">
                         <i class="fa-solid fa-star pr-1"></i> AN SAO LÁ SỐ
